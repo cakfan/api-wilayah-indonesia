@@ -14,7 +14,7 @@ const healthResponse = z
 
 const healthRoute = createRoute({
   method: "get",
-  path: "/",
+  path: "/health",
   tags: ["Health"],
   summary: "Health check",
   description: "Check API and database health status",
