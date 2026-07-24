@@ -57,15 +57,15 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.6 Routes (Endpoint)
 
-- [ ] Buat `src/routes/health.route.ts` — FR-11, return status DB + versi data
-- [ ] Buat `src/routes/provinces.route.ts` — FR-1, FR-2, FR-3
-- [ ] Buat `src/routes/regencies.route.ts` — FR-4, FR-5
-- [ ] Buat `src/routes/districts.route.ts` — FR-6, FR-7
-- [ ] Buat `src/routes/villages.route.ts` — FR-8
-- [ ] Buat `src/routes/search.route.ts` — FR-9
-- [ ] Buat `src/routes/postal-codes.route.ts` — FR-10
-- [ ] Daftarkan semua route di `src/index.ts`
-- [ ] Pastikan response envelope konsisten (ARCHITECTURE.md section 6.1)
+- [x] Buat `src/routes/health.route.ts` — FR-11, return status DB + versi data
+- [x] Buat `src/routes/provinces.route.ts` — FR-1, FR-2, FR-3
+- [x] Buat `src/routes/regencies.route.ts` — FR-4, FR-5
+- [x] Buat `src/routes/districts.route.ts` — FR-6, FR-7
+- [x] Buat `src/routes/villages.route.ts` — FR-8
+- [x] Buat `src/routes/search.route.ts` — FR-9
+- [x] Buat `src/routes/postal-codes.route.ts` — FR-10
+- [x] Daftarkan semua route di `src/index.ts`
+- [x] Pastikan response envelope konsisten (ARCHITECTURE.md section 6.1)
 
 ### 1.7 Middleware
 
