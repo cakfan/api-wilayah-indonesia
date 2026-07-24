@@ -69,13 +69,13 @@ bun run validate-data
 
 ## Data Coverage
 
-Saat ini, kode pos dan koordinat lat/lng **belum tersedia** untuk sebagian besar desa/kelurahan dalam dataset. Field `postal_code`, `latitude`, dan `longitude` pada endpoint `/api/v1/villages/:code` akan bernilai `null` untuk data yang belum dilengkapi.
+| Field | Coverage | Sumber |
+|-------|----------|--------|
+| Kode wilayah (4 level) | 100% (83.762 desa/kelurahan) | Kemendagri via wilayah.id |
+| Kode pos | 85.4% (71.569 dari 83.762) | open-admin-data |
+| Lat/Lng | 85.4% (71.555 dari 83.762) | open-admin-data |
 
-| Field | Status | Sumber |
-|-------|--------|--------|
-| Kode wilayah (4 level) | Lengkap | Kemendagri |
-| Kode pos | Belum tersedia (0%) | Perlu kontribusi |
-| Lat/Lng | Belum tersedia (0%) | Perlu kontribusi |
+Field `postal_code`, `latitude`, dan `longitude` akan bernilai `null` untuk ~14.5% desa yang belum tercakup (terutama di Papua).
 
 Kontributor dipersilakan membantu melengkapi data kode pos dan koordinat melalui [GitHub Issues](../../issues) atau pull request. Lihat [CONTRIBUTING.md](CONTRIBUTING.md) untuk panduan.
 

@@ -22,6 +22,5 @@ Format berdasarkan [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Data validation pipeline
 
 ### Data Sources
-- Kode wilayah: Kemendagri
-- Kode pos: Dataset open-source kode pos Indonesia
-- Lat/Lng: OpenStreetMap Nominatim
+- Kode wilayah: Kemendagri (via wilayah.id API) — 38 provinsi, 514 kab/kota, 7.285 kecamatan, 83.762 desa/kelurahan
+- Kode pos + Lat/Lng: open-admin-data (CC-BY-4.0) — 85.4% coverage (71.569 dari 83.762 desa)
