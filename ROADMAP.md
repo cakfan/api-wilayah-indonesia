@@ -10,23 +10,23 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.1 Project Setup
 
-- [ ] Init project: `bun init`, install dependencies (hono, zod, @hono/zod-validator, @hono/zod-openapi, pino)
-- [ ] Setup folder structure sesuai ARCHITECTURE.md section 5
-- [ ] Setup TypeScript config (`tsconfig.json`)
-- [ ] Setup Biome/ESLint untuk linting
-- [ ] Setup `package.json` scripts (dev, build, build-data, validate-data, test, lint)
-- [ ] Setup `.gitignore` (node_modules, `data/db/regions.sqlite`, dist)
-- [ ] Setup `.env.example` (PORT, ALLOWED_ORIGINS, LOG_LEVEL)
-- [ ] Setup `bun.lock` (commit ke git)
+- [x] Init project: `bun init`, install dependencies (hono, zod, @hono/zod-validator, @hono/zod-openapi, pino)
+- [x] Setup folder structure sesuai ARCHITECTURE.md section 5
+- [x] Setup TypeScript config (`tsconfig.json`)
+- [x] Setup Biome/ESLint untuk linting
+- [x] Setup `package.json` scripts (dev, build, build-data, validate-data, test, lint)
+- [x] Setup `.gitignore` (node_modules, `data/db/regions.sqlite`, dist)
+- [x] Setup `.env.example` (PORT, ALLOWED_ORIGINS, LOG_LEVEL)
+- [x] Setup `bun.lock` (commit ke git)
 
 ### 1.2 Database Schema & Build Pipeline
 
-- [ ] Buat `scripts/build-data.ts` — parse `data/raw/*.json`, normalisasi, tulis ke SQLite (ARCHITECTURE.md section 3)
-- [ ] Buat schema SQL: provinces, regencies, districts, villages + indexes + FTS5 (ARCHITECTURE.md section 4)
-- [ ] Buat `scripts/validate-data.ts` — cek parent-child relation, no duplicate, lat/lng range Indonesia, kode pos 5 digit (ARCHITECTURE.md section 3)
-- [ ] Buat `scripts/seed-check.ts` — sanity check jumlah row per level
-- [ ] Siapkan dataset `data/raw/` dari sumber (Kemendagri, kodepos, OSM) — minimal sample data dulu untuk development
-- [ ] Jalankan build pipeline: pasti `regions.sqlite` ter-generate dengan benar
+- [x] Buat `scripts/build-data.ts` — parse `data/raw/*.json`, normalisasi, tulis ke SQLite (ARCHITECTURE.md section 3)
+- [x] Buat schema SQL: provinces, regencies, districts, villages + indexes + FTS5 (ARCHITECTURE.md section 4)
+- [x] Buat `scripts/validate-data.ts` — cek parent-child relation, no duplicate, lat/lng range Indonesia, kode pos 5 digit (ARCHITECTURE.md section 3)
+- [x] Buat `scripts/seed-check.ts` — sanity check jumlah row per level
+- [x] Siapkan dataset `data/raw/` dari sumber (Kemendagri, kodepos, OSM) — minimal sample data dulu untuk development
+- [x] Jalankan build pipeline: pasti `regions.sqlite` ter-generate dengan benar
 
 ### 1.3 Core Application
 
