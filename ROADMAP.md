@@ -53,7 +53,7 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.5 Service Layer
 
-- [ ] Buat `src/services/region.service.ts` — panggil repository, validasi bisnis (kalau ada), format output
+- [x] Buat `src/services/region.service.ts` — panggil repository, validasi bisnis (kalau ada), format output
 
 ### 1.6 Routes (Endpoint)
 
