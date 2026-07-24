@@ -1,5 +1,5 @@
 import { Database } from "bun:sqlite";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 
 const DB_DIR = join(import.meta.dir, "..", "data", "db");
@@ -34,9 +34,9 @@ interface Village {
   district_code: string;
   name: string;
   type: "kelurahan" | "desa";
-  postal_code: string | null;
-  latitude: number | null;
-  longitude: number | null;
+  postal_code?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 const SCHEMA = `
@@ -75,16 +75,15 @@ const SCHEMA = `
 `;
 
 const FTS_SCHEMA = `
-  CREATE VIRTUAL TABLE IF NOT EXISTS villages_fts USING fts5(
+  CREATE VIRTUAL TABLE IF NOT EXISTS search_index USING fts5(
+    entity_type,
+    entity_code,
     name,
-    content='villages',
-    content_rowid='rowid'
-  );
-
-  CREATE VIRTUAL TABLE IF NOT EXISTS regencies_fts USING fts5(
-    name,
-    content='regencies',
-    content_rowid='rowid'
+    province_code,
+    regency_code,
+    district_code,
+    regency_type,
+    village_type
   );
 `;
 
@@ -97,8 +96,7 @@ function build() {
   db.exec("PRAGMA foreign_keys=ON");
 
   console.log("Creating schema...");
-  db.exec("DROP TABLE IF EXISTS villages_fts");
-  db.exec("DROP TABLE IF EXISTS regencies_fts");
+  db.exec("DROP TABLE IF EXISTS search_index");
   db.exec("DROP TABLE IF EXISTS villages");
   db.exec("DROP TABLE IF EXISTS districts");
   db.exec("DROP TABLE IF EXISTS regencies");
@@ -108,7 +106,11 @@ function build() {
   const provinces = readJson<Province>("provinces.json");
   const regencies = readJson<Regency>("regencies.json");
   const districts = readJson<District>("districts.json");
-  const villages = readJson<Village>("villages-postal-latlng.json");
+  const villagesFile = existsSync(join(RAW_DIR, "villages.json"))
+    ? "villages.json"
+    : "villages-postal-latlng.json";
+  console.log(`Reading villages from ${villagesFile}...`);
+  const villages = readJson<Village>(villagesFile);
 
   console.log(`Inserting ${provinces.length} provinces...`);
   const insertProvince = db.prepare("INSERT INTO provinces (code, name) VALUES (?, ?)");
@@ -137,15 +139,33 @@ function build() {
     "INSERT INTO villages (code, district_code, name, type, postal_code, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?)"
   );
   for (const v of villages) {
-    insertVillage.run(v.code, v.district_code, v.name, v.type, v.postal_code, v.latitude, v.longitude);
+    insertVillage.run(v.code, v.district_code, v.name, v.type, v.postal_code ?? null, v.latitude ?? null, v.longitude ?? null);
   }
 
   console.log("Creating FTS tables...");
   db.exec(FTS_SCHEMA);
 
-  console.log("Populating FTS index...");
-  db.exec("INSERT INTO villages_fts(villages_fts) VALUES('rebuild')");
-  db.exec("INSERT INTO regencies_fts(regencies_fts) VALUES('rebuild')");
+  console.log("Populating FTS search index...");
+  db.exec(`
+    INSERT INTO search_index(entity_type, entity_code, name, province_code, regency_code, district_code, regency_type, village_type)
+    SELECT 'provinsi', code, name, code, NULL, NULL, NULL, NULL FROM provinces
+  `);
+  db.exec(`
+    INSERT INTO search_index(entity_type, entity_code, name, province_code, regency_code, district_code, regency_type, village_type)
+    SELECT 'regency', r.code, r.name, r.province_code, r.code, NULL, r.type, NULL FROM regencies r
+  `);
+  db.exec(`
+    INSERT INTO search_index(entity_type, entity_code, name, province_code, regency_code, district_code, regency_type, village_type)
+    SELECT 'district', d.code, d.name, r.province_code, d.regency_code, d.code, r.type, NULL FROM districts d
+      JOIN regencies r ON d.regency_code = r.code
+  `);
+  db.exec(`
+    INSERT INTO search_index(entity_type, entity_code, name, province_code, regency_code, district_code, regency_type, village_type)
+    SELECT 'village', v.code, v.name, r.province_code, d.regency_code, v.district_code, r.type, v.type
+      FROM villages v
+      JOIN districts d ON v.district_code = d.code
+      JOIN regencies r ON d.regency_code = r.code
+  `);
 
   db.close();
 

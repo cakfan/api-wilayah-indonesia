@@ -14,13 +14,14 @@ beforeAll(() => {
 describe("findAllProvinces", () => {
   it("should return all provinces", () => {
     const provinces = repo.findAllProvinces();
-    expect(provinces.length).toBe(5);
+    expect(provinces.length).toBe(38);
   });
 
   it("should be sorted by code", () => {
     const provinces = repo.findAllProvinces();
     const codes = provinces.map((p) => p.code);
-    expect(codes).toEqual(["11", "12", "31", "32", "35"]);
+    expect(codes[0]).toBe("11");
+    expect(codes[codes.length - 1]).toBe("96");
   });
 });
 
@@ -39,14 +40,14 @@ describe("findProvinceByCode", () => {
 describe("findRegenciesByProvince", () => {
   it("should return regencies for province 11", () => {
     const result = repo.findRegenciesByProvince("11", 1, 50);
-    expect(result.data.length).toBe(3);
-    expect(result.total).toBe(3);
+    expect(result.data.length).toBe(23);
+    expect(result.total).toBe(23);
   });
 
   it("should support pagination", () => {
     const result = repo.findRegenciesByProvince("11", 1, 2);
     expect(result.data.length).toBe(2);
-    expect(result.total).toBe(3);
+    expect(result.total).toBe(23);
   });
 
   it("should return empty for non-existent province", () => {
@@ -60,7 +61,7 @@ describe("findRegencyByCode", () => {
   it("should return regency by code", () => {
     const regency = repo.findRegencyByCode("11.01");
     expect(regency).toBeDefined();
-    expect(regency?.name).toBe("KAB. ACEH SELATAN");
+    expect(regency?.name).toBe("KABUPATEN ACEH SELATAN");
     expect(regency?.type).toBe("kabupaten");
   });
 
@@ -73,8 +74,8 @@ describe("findRegencyByCode", () => {
 describe("findDistrictsByRegency", () => {
   it("should return districts for regency 11.01", () => {
     const result = repo.findDistrictsByRegency("11.01", 1, 50);
-    expect(result.data.length).toBe(2);
-    expect(result.total).toBe(2);
+    expect(result.data.length).toBe(18);
+    expect(result.total).toBe(18);
   });
 });
 
@@ -82,27 +83,24 @@ describe("findDistrictByCode", () => {
   it("should return district by code", () => {
     const district = repo.findDistrictByCode("11.01.01");
     expect(district).toBeDefined();
-    expect(district?.name).toBe("Kec. Bakongan");
+    expect(district?.name).toBe("BAKONGAN");
   });
 });
 
 describe("findVillagesByDistrict", () => {
   it("should return villages for district 11.01.01", () => {
     const result = repo.findVillagesByDistrict("11.01.01", 1, 50);
-    expect(result.data.length).toBe(2);
-    expect(result.total).toBe(2);
+    expect(result.data.length).toBe(7);
+    expect(result.total).toBe(7);
   });
 });
 
 describe("findVillageByCode", () => {
-  it("should return village with postal code and coordinates", () => {
+  it("should return village", () => {
     const village = repo.findVillageByCode("11.01.01.2001");
     expect(village).toBeDefined();
-    expect(village?.name).toBe("Desa Bakongan");
-    expect(village?.type).toBe("desa");
-    expect(village?.postal_code).toBe("23773");
-    expect(village?.latitude).toBe(2.9561);
-    expect(village?.longitude).toBe(97.2847);
+    expect(village?.name).toBe("KEUDE BAKONGAN");
+    expect(village?.type).toBe("kelurahan");
   });
 });
 
@@ -119,12 +117,6 @@ describe("searchRegions", () => {
 });
 
 describe("findVillagesByPostalCode", () => {
-  it("should return villages by postal code", () => {
-    const result = repo.findVillagesByPostalCode("10310", 1, 50);
-    expect(result.data.length).toBe(1);
-    expect(result.data[0].name).toBe("Kel. Menteng");
-  });
-
   it("should return empty for non-existent postal code", () => {
     const result = repo.findVillagesByPostalCode("00000", 1, 50);
     expect(result.data.length).toBe(0);

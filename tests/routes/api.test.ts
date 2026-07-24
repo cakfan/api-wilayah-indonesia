@@ -25,9 +25,9 @@ describe("GET /api/v1/provinces", () => {
     const res = await app.request("/api/v1/provinces");
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.data.length).toBe(5);
+    expect(body.data.length).toBe(38);
     expect(body.meta).toBeDefined();
-    expect(body.meta.total).toBe(5);
+    expect(body.meta.total).toBe(38);
   });
 });
 
@@ -53,8 +53,8 @@ describe("GET /api/v1/provinces/:code/regencies", () => {
     const res = await app.request("/api/v1/provinces/11/regencies");
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.data.length).toBe(3);
-    expect(body.meta.total).toBe(3);
+    expect(body.data.length).toBe(23);
+    expect(body.meta.total).toBe(23);
   });
 
   it("should support pagination", async () => {
@@ -62,8 +62,8 @@ describe("GET /api/v1/provinces/:code/regencies", () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.data.length).toBe(2);
-    expect(body.meta.total).toBe(3);
-    expect(body.meta.totalPages).toBe(2);
+    expect(body.meta.total).toBe(23);
+    expect(body.meta.totalPages).toBe(12);
   });
 
   it("should return 404 for non-existent province", async () => {
@@ -78,7 +78,7 @@ describe("GET /api/v1/regencies/:code", () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.data.code).toBe("11.01");
-    expect(body.data.name).toBe("KAB. ACEH SELATAN");
+    expect(body.data.name).toBe("KABUPATEN ACEH SELATAN");
   });
 
   it("should return 404 for non-existent code", async () => {
@@ -92,7 +92,7 @@ describe("GET /api/v1/regencies/:code/districts", () => {
     const res = await app.request("/api/v1/regencies/11.01/districts");
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.data.length).toBe(2);
+    expect(body.data.length).toBe(18);
   });
 });
 
@@ -102,7 +102,7 @@ describe("GET /api/v1/districts/:code", () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.data.code).toBe("11.01.01");
-    expect(body.data.name).toBe("Kec. Bakongan");
+    expect(body.data.name).toBe("BAKONGAN");
   });
 
   it("should return 404 for non-existent code", async () => {
@@ -116,20 +116,17 @@ describe("GET /api/v1/districts/:code/villages", () => {
     const res = await app.request("/api/v1/districts/11.01.01/villages");
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.data.length).toBe(2);
+    expect(body.data.length).toBe(7);
   });
 });
 
 describe("GET /api/v1/villages/:code", () => {
-  it("should return village with postal code and coordinates", async () => {
+  it("should return village", async () => {
     const res = await app.request("/api/v1/villages/11.01.01.2001");
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.data.code).toBe("11.01.01.2001");
-    expect(body.data.name).toBe("Desa Bakongan");
-    expect(body.data.postal_code).toBe("23773");
-    expect(body.data.latitude).toBe(2.9561);
-    expect(body.data.longitude).toBe(97.2847);
+    expect(body.data.name).toBe("KEUDE BAKONGAN");
   });
 
   it("should return 404 for non-existent code", async () => {
@@ -160,14 +157,6 @@ describe("GET /api/v1/search", () => {
 });
 
 describe("GET /api/v1/postal-codes/:code", () => {
-  it("should return villages by postal code", async () => {
-    const res = await app.request("/api/v1/postal-codes/10310");
-    expect(res.status).toBe(200);
-    const body = await res.json();
-    expect(body.data.length).toBe(1);
-    expect(body.data[0].name).toBe("Kel. Menteng");
-  });
-
   it("should return 400 for invalid postal code format", async () => {
     const res = await app.request("/api/v1/postal-codes/abc");
     expect(res.status).toBe(400);

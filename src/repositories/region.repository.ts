@@ -72,112 +72,82 @@ function createRepository(db: Database) {
     searchRegions(q: string, type: string | undefined, page: number, limit: number): { data: (Province | Regency | District | Village)[]; total: number } {
       const offset = getOffset(page, limit);
 
-      const conditions: string[] = [];
+      let typeCondition = "";
 
       if (type) {
         if (type === "provinsi") {
-          conditions.push("p.code IS NOT NULL");
-        } else if (type === "kabupaten" || type === "kota") {
-          conditions.push("r.code IS NOT NULL");
-          if (type === "kabupaten") {
-            conditions.push("r.type = 'kabupaten'");
-          } else {
-            conditions.push("r.type = 'kota'");
-          }
+          typeCondition = "AND si.entity_type = 'provinsi'";
+        } else if (type === "kabupaten") {
+          typeCondition = "AND si.entity_type = 'regency' AND si.regency_type = 'kabupaten'";
+        } else if (type === "kota") {
+          typeCondition = "AND si.entity_type = 'regency' AND si.regency_type = 'kota'";
         } else if (type === "kecamatan") {
-          conditions.push("d.code IS NOT NULL");
-        } else if (type === "kelurahan" || type === "desa") {
-          conditions.push("v.code IS NOT NULL");
-          if (type === "kelurahan") {
-            conditions.push("v.type = 'kelurahan'");
-          } else {
-            conditions.push("v.type = 'desa'");
-          }
+          typeCondition = "AND si.entity_type = 'district'";
+        } else if (type === "kelurahan") {
+          typeCondition = "AND si.entity_type = 'village' AND si.village_type = 'kelurahan'";
+        } else if (type === "desa") {
+          typeCondition = "AND si.entity_type = 'village' AND si.village_type = 'desa'";
         }
       }
 
-      const whereClause = conditions.length > 0 ? `AND ${conditions.join(" AND ")}` : "";
+      const countQuery = `
+        SELECT COUNT(*) as total
+        FROM search_index si
+        WHERE search_index MATCH ?
+        ${typeCondition}
+      `;
 
-      const searchQuery = `
-        SELECT DISTINCT
-          CASE
-            WHEN p.code IS NOT NULL THEN 'provinsi'
-            WHEN r.code IS NOT NULL AND r.type = 'kabupaten' THEN 'kabupaten'
-            WHEN r.code IS NOT NULL AND r.type = 'kota' THEN 'kota'
-            WHEN d.code IS NOT NULL THEN 'kecamatan'
-            WHEN v.code IS NOT NULL AND v.type = 'kelurahan' THEN 'kelurahan'
-            WHEN v.code IS NOT NULL AND v.type = 'desa' THEN 'desa'
-          END as type,
-          COALESCE(p.code, r.code, d.code, v.code) as code,
-          COALESCE(p.name, r.name, d.name, v.name) as name,
-          p.code as province_code,
-          r.code as regency_code,
-          d.code as district_code,
-          r.type as regency_type,
-          v.type as village_type,
+      const { total } = timedGet<{ total: number }>(db, countQuery, q);
+
+      const dataQuery = `
+        SELECT
+          si.entity_type,
+          si.entity_code as code,
+          si.name,
+          si.province_code,
+          si.regency_code,
+          si.district_code,
+          si.regency_type,
+          si.village_type,
           v.postal_code,
           v.latitude,
           v.longitude
-        FROM villages v
-        LEFT JOIN districts d ON v.district_code = d.code
-        LEFT JOIN regencies r ON d.regency_code = r.code
-        LEFT JOIN provinces p ON r.province_code = p.code
-        WHERE (
-          p.name LIKE ? OR
-          r.name LIKE ? OR
-          d.name LIKE ? OR
-          v.name LIKE ?
-        )
-        ${whereClause}
-        ORDER BY
-          CASE
-            WHEN p.name LIKE ? THEN 1
-            WHEN r.name LIKE ? THEN 2
-            WHEN d.name LIKE ? THEN 3
-            WHEN v.name LIKE ? THEN 4
-          END,
-          COALESCE(p.name, r.name, d.name, v.name)
+        FROM search_index si
+        LEFT JOIN villages v ON si.entity_type = 'village' AND si.entity_code = v.code
+        WHERE search_index MATCH ?
+        ${typeCondition}
+        ORDER BY rank
         LIMIT ? OFFSET ?
       `;
 
-      const searchPattern = `%${q}%`;
-      const countParams = [searchPattern, searchPattern, searchPattern, searchPattern];
+      const rows = timedQuery<Array<{
+        entity_type: string;
+        code: string;
+        name: string;
+        province_code: string | null;
+        regency_code: string | null;
+        district_code: string | null;
+        regency_type: string | null;
+        village_type: string | null;
+        postal_code: string | null;
+        latitude: number | null;
+        longitude: number | null;
+      }>>(db, dataQuery, q, limit, offset);
 
-      const countQuery = `
-        SELECT COUNT(DISTINCT
-          CASE
-            WHEN p.code IS NOT NULL THEN 'provinsi:' || p.code
-            WHEN r.code IS NOT NULL THEN 'regency:' || r.code
-            WHEN d.code IS NOT NULL THEN 'district:' || d.code
-            WHEN v.code IS NOT NULL THEN 'village:' || v.code
-          END
-        ) as total
-        FROM villages v
-        LEFT JOIN districts d ON v.district_code = d.code
-        LEFT JOIN regencies r ON d.regency_code = r.code
-        LEFT JOIN provinces p ON r.province_code = p.code
-        WHERE (
-          p.name LIKE ? OR
-          r.name LIKE ? OR
-          d.name LIKE ? OR
-          v.name LIKE ?
-        )
-        ${whereClause}
-      `;
-
-      const { total } = timedGet<{ total: number }>(db, countQuery, ...countParams);
-
-      const allParams = [
-        ...countParams,
-        searchPattern,
-        searchPattern,
-        searchPattern,
-        searchPattern,
-        limit,
-        offset,
-      ];
-
-      const data = timedQuery<(Province | Regency | District | Village)[]>(db, searchQuery, ...allParams);
+      const data: (Province | Regency | District | Village)[] = rows.map((r) => {
+        switch (r.entity_type) {
+          case "provinsi":
+            return { code: r.code, name: r.name };
+          case "regency":
+            return { code: r.code, province_code: r.province_code ?? "", name: r.name, type: r.regency_type as "kabupaten" | "kota" };
+          case "district":
+            return { code: r.code, regency_code: r.regency_code ?? "", name: r.name };
+          case "village":
+            return { code: r.code, district_code: r.district_code ?? "", name: r.name, type: r.village_type as "kelurahan" | "desa", postal_code: r.postal_code, latitude: r.latitude, longitude: r.longitude };
+          default:
+            return { code: r.code, name: r.name };
+        }
+      });
 
       return { data, total };
     },
