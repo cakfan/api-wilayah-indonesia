@@ -39,17 +39,17 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.4 Repository Layer
 
-- [ ] Buat `src/repositories/region.repository.ts` — semua raw SQL query:
-  - [ ] `findAllProvinces()` — FR-1
-  - [ ] `findProvinceByCode(code)` — FR-2
-  - [ ] `findRegenciesByProvince(provinceCode, page, limit)` — FR-3
-  - [ ] `findRegencyByCode(code)` — FR-4
-  - [ ] `findDistrictsByRegency(regencyCode, page, limit)` — FR-5
-  - [ ] `findDistrictByCode(code)` — FR-6
-  - [ ] `findVillagesByDistrict(districtCode, page, limit)` — FR-7
-  - [ ] `findVillageByCode(code)` — FR-8 (include kode pos & lat/lng)
-  - [ ] `searchRegions(q, type, page, limit)` — FR-9 (FTS5 query)
-  - [ ] `findVillagesByPostalCode(postalCode, page, limit)` — FR-10
+- [x] Buat `src/repositories/region.repository.ts` — semua raw SQL query:
+  - [x] `findAllProvinces()` — FR-1
+  - [x] `findProvinceByCode(code)` — FR-2
+  - [x] `findRegenciesByProvince(provinceCode, page, limit)` — FR-3
+  - [x] `findRegencyByCode(code)` — FR-4
+  - [x] `findDistrictsByRegency(regencyCode, page, limit)` — FR-5
+  - [x] `findDistrictByCode(code)` — FR-6
+  - [x] `findVillagesByDistrict(districtCode, page, limit)` — FR-7
+  - [x] `findVillageByCode(code)` — FR-8 (include kode pos & lat/lng)
+  - [x] `searchRegions(q, type, page, limit)` — FR-9 (FTS5 query)
+  - [x] `findVillagesByPostalCode(postalCode, page, limit)` — FR-10
 
 ### 1.5 Service Layer
 
