@@ -1,9 +1,13 @@
 import { Hono } from "hono";
+import { logger } from "hono/logger";
+import { successResponse } from "@/lib/response";
 
 const app = new Hono();
 
+app.use("*", logger());
+
 app.get("/", (c) => {
-  return c.json({ message: "API Wilayah Indonesia" });
+  return c.json(successResponse({ message: "API Wilayah Indonesia" }));
 });
 
 export default {
