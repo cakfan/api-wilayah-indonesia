@@ -69,13 +69,13 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.7 Middleware
 
-- [ ] Buat `src/middleware/error-handler.ts` — global onError, tangkap semua exception → format error konsisten
-- [ ] Buat `src/middleware/rate-limit.ts` — per IP, 100 req/menit (ARCHITECTURE.md section 7, NFR: rate limiting wajib)
-- [ ] Buat `src/middleware/cache-control.ts` — Cache-Control + ETag headers (ARCHITECTURE.md section 6.3)
-- [ ] Setup CORS (explicit origin config)
-- [ ] Setup compression (gzip/brotli)
-- [ ] Setup secure headers (`hono/secure-headers`)
-- [ ] Setup logger (pino, structured JSON)
+- [x] Buat `src/middleware/error-handler.ts` — global onError, tangkap semua exception → format error konsisten
+- [x] Buat `src/middleware/rate-limit.ts` — per IP, 100 req/menit (ARCHITECTURE.md section 7, NFR: rate limiting wajib)
+- [x] Buat `src/middleware/cache-control.ts` — Cache-Control + ETag headers (ARCHITECTURE.md section 6.3)
+- [x] Setup CORS (explicit origin config)
+- [x] Setup compression (gzip/brotli)
+- [x] Setup secure headers (`hono/secure-headers`)
+- [x] Setup logger (pino, structured JSON)
 
 ### 1.8 API Documentation
 
