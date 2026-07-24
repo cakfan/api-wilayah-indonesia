@@ -1,0 +1,31 @@
+---
+name: Data Correction
+about: Laporkan data kode pos, koordinat, atau nama wilayah yang salah
+title: "[DATA] "
+labels: data-correction
+---
+
+## Wilayah yang perlu diperbaiki
+
+- Kode wilayah:
+- Nama wilayah saat ini:
+- Level: (Provinsi / Kabupaten / Kecamatan / Kelurahan)
+
+## Data yang benar
+
+- Nama yang benar:
+- Kode pos yang benar:
+- Koordinat yang benar: (lat, lng)
+
+## Sumber data
+
+Sumber informasi yang menyatakan data ini salah.
+
+- [ ] Website resmi Kemendagri
+- [ ] Website resmi BPS
+- [ ] Website resmi PT POS Indonesia
+- [ ] Lainnya: ...
+
+## Additional context
+
+Screenshot atau link sumber data.

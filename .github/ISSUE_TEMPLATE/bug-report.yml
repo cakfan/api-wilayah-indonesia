@@ -1,0 +1,34 @@
+---
+name: Bug Report
+about: Laporkan bug pada API
+title: "[BUG] "
+labels: bug
+---
+
+## Describe the bug
+
+Deskripsi bug yang ditemukan.
+
+## How to reproduce
+
+1. Request ke endpoint '...'
+2. Dengan parameter '...'
+3. Lihat error
+
+## Expected behavior
+
+Apa yang seharusnya terjadi.
+
+## Actual behavior
+
+Apa yang terjadi.
+
+## Environment
+
+- API version:
+- Client: (browser/curl/SDK)
+- OS:
+
+## Additional context
+
+Screenshot atau response body jika ada.
