@@ -1,0 +1,195 @@
+# ROADMAP — API Wilayah Indonesia (Kode Pos + Lat/Lng)
+
+> Berdasarkan PRD.md dan ARCHITECTURE.md. Setiap task dilengkapi referensi section terkait.
+
+---
+
+## Phase 1 — V1 (MVP)
+
+Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik gratis tanpa auth.
+
+### 1.1 Project Setup
+
+- [ ] Init project: `bun init`, install dependencies (hono, zod, @hono/zod-validator, @hono/zod-openapi, pino)
+- [ ] Setup folder structure sesuai ARCHITECTURE.md section 5
+- [ ] Setup TypeScript config (`tsconfig.json`)
+- [ ] Setup Biome/ESLint untuk linting
+- [ ] Setup `package.json` scripts (dev, build, build-data, validate-data, test, lint)
+- [ ] Setup `.gitignore` (node_modules, `data/db/regions.sqlite`, dist)
+- [ ] Setup `.env.example` (PORT, ALLOWED_ORIGINS, LOG_LEVEL)
+- [ ] Setup `bun.lock` (commit ke git)
+
+### 1.2 Database Schema & Build Pipeline
+
+- [ ] Buat `scripts/build-data.ts` — parse `data/raw/*.json`, normalisasi, tulis ke SQLite (ARCHITECTURE.md section 3)
+- [ ] Buat schema SQL: provinces, regencies, districts, villages + indexes + FTS5 (ARCHITECTURE.md section 4)
+- [ ] Buat `scripts/validate-data.ts` — cek parent-child relation, no duplicate, lat/lng range Indonesia, kode pos 5 digit (ARCHITECTURE.md section 3)
+- [ ] Buat `scripts/seed-check.ts` — sanity check jumlah row per level
+- [ ] Siapkan dataset `data/raw/` dari sumber (Kemendagri, kodepos, OSM) — minimal sample data dulu untuk development
+- [ ] Jalankan build pipeline: pasti `regions.sqlite` ter-generate dengan benar
+
+### 1.3 Core Application
+
+- [ ] Setup entry point `src/index.ts` — Hono app + middleware global (ARCHITECTURE.md section 7)
+- [ ] Buat `src/db/connection.ts` — koneksi `bun:sqlite` read-only mode (ARCHITECTURE.md section 2: prinsip stateless)
+- [ ] Buat `src/schemas/region.schema.ts` — Zod schemas untuk semua request params, query params, dan response body
+- [ ] Buat `src/types/region.types.ts` — tipe TypeScript dari Zod schemas
+- [ ] Buat `src/lib/pagination.ts` — helper hitung page/totalPages, clamp limit
+- [ ] Buat `src/lib/response.ts` — helper format response envelope (data+meta / error)
+
+### 1.4 Repository Layer
+
+- [ ] Buat `src/repositories/region.repository.ts` — semua raw SQL query:
+  - [ ] `findAllProvinces()` — FR-1
+  - [ ] `findProvinceByCode(code)` — FR-2
+  - [ ] `findRegenciesByProvince(provinceCode, page, limit)` — FR-3
+  - [ ] `findRegencyByCode(code)` — FR-4
+  - [ ] `findDistrictsByRegency(regencyCode, page, limit)` — FR-5
+  - [ ] `findDistrictByCode(code)` — FR-6
+  - [ ] `findVillagesByDistrict(districtCode, page, limit)` — FR-7
+  - [ ] `findVillageByCode(code)` — FR-8 (include kode pos & lat/lng)
+  - [ ] `searchRegions(q, type, page, limit)` — FR-9 (FTS5 query)
+  - [ ] `findVillagesByPostalCode(postalCode, page, limit)` — FR-10
+
+### 1.5 Service Layer
+
+- [ ] Buat `src/services/region.service.ts` — panggil repository, validasi bisnis (kalau ada), format output
+
+### 1.6 Routes (Endpoint)
+
+- [ ] Buat `src/routes/health.route.ts` — FR-11, return status DB + versi data
+- [ ] Buat `src/routes/provinces.route.ts` — FR-1, FR-2, FR-3
+- [ ] Buat `src/routes/regencies.route.ts` — FR-4, FR-5
+- [ ] Buat `src/routes/districts.route.ts` — FR-6, FR-7
+- [ ] Buat `src/routes/villages.route.ts` — FR-8
+- [ ] Buat `src/routes/search.route.ts` — FR-9
+- [ ] Buat `src/routes/postal-codes.route.ts` — FR-10
+- [ ] Daftarkan semua route di `src/index.ts`
+- [ ] Pastikan response envelope konsisten (ARCHITECTURE.md section 6.1)
+
+### 1.7 Middleware
+
+- [ ] Buat `src/middleware/error-handler.ts` — global onError, tangkap semua exception → format error konsisten
+- [ ] Buat `src/middleware/rate-limit.ts` — per IP, 100 req/menit (ARCHITECTURE.md section 7, NFR: rate limiting wajib)
+- [ ] Buat `src/middleware/cache-control.ts` — Cache-Control + ETag headers (ARCHITECTURE.md section 6.3)
+- [ ] Setup CORS (explicit origin config)
+- [ ] Setup compression (gzip/brotli)
+- [ ] Setup secure headers (`hono/secure-headers`)
+- [ ] Setup logger (pino, structured JSON)
+
+### 1.8 API Documentation
+
+- [ ] Setup `@hono/zod-openapi` di semua route — FR-12
+- [ ] Setup Swagger UI endpoint di `/docs`
+- [ ] Setup `/openapi.json` endpoint
+- [ ] Dokumentasikan coverage gap kode pos & lat/lng di docs (PRD section 7)
+
+### 1.9 Testing
+
+- [ ] Setup test database (SQLite dengan subset data kecil)
+- [ ] Unit test `src/lib/pagination.ts`
+- [ ] Unit test `src/lib/response.ts`
+- [ ] Unit test `src/repositories/region.repository.ts` — test semua query terhadap test DB
+- [ ] Integration test semua route — request/response format, status code, error case (404, invalid param)
+- [ ] Jalankan `validate-data.ts` sebagai test — fail kalau ada orphan record
+- [ ] Pastikan p95 latency < 100ms single lookup, < 300ms search/list (NFR)
+
+### 1.10 CI/CD Pipeline
+
+- [ ] Buat GitHub Actions workflow (ARCHITECTURE.md section 10):
+  - [ ] `bun install`
+  - [ ] `bun run lint`
+  - [ ] `bun run build-data`
+  - [ ] `bun run validate-data`
+  - [ ] `bun test`
+  - [ ] Deploy ke Railway/Render (on main branch)
+- [ ] Setup Railway/Render project, connect ke GitHub repo
+- [ ] Pastikan `regions.sqlite` di-generate saat CI, tidak di-commit (ARCHITECTURE.md section 12: keputusan #2)
+
+### 1.11 Open Source Preparation
+
+- [ ] Buat `README.md` — deskripsi project, quick start, endpoint list, attribution (Kemendagri, OSM/ODbL, kodepos)
+- [ ] Buat `CONTRIBUTING.md` — panduan kontributor (report data via GitHub Issues/PR)
+- [ ] Buat `CHANGELOG.md` — catat versi pertama
+- [ ] Pilih lisensi: MIT (PRD section 11)
+- [ ] Setup issue templates di GitHub (bug report, data correction report)
+- [ ] Setup branch protection di GitHub
+
+### 1.12 Observability
+
+- [ ] Log setiap request: method, path, status, response time (ARCHITECTURE.md section 11)
+- [ ] Endpoint `/health` return DB connection status + build timestamp
+
+---
+
+## Phase 2 — V2
+
+Target: nearby search, bulk export, evaluasi auth/tier, siap untuk traffic lebih tinggi.
+
+### 2.1 Nearby/Radius Search — FR-13
+
+- [ ] Implementasi Haversine formula di repository layer
+- [ ] Buat `GET /api/v1/nearby?lat=&lng=&radius=&limit=&page=`
+- [ ] Evaluasi apakah perlu spatial index atau cukup brute-force (83rb desa masih manageable)
+- [ ] Unit test + integration test
+
+### 2.2 Bulk Export — FR-14
+
+- [ ] Buat `GET /api/v1/provinces/:code/export` — download semua desa dalam 1 provinsi
+- [ ] Format output: JSON array (atau CSV kalau banyak user butuh)
+- [ ] Pertimbangkan streaming response untuk file besar
+- [ ] Test
+
+### 2.3 Auth & Rate Limiting V2
+
+- [ ] Evaluasi traffic setelah beberapa bulan V1
+- [ ] Buat tabel API keys di SQLite (kalau pakai SQLite-based) atau pilih layanan auth sederhana
+- [ ] Implementasi API key validation middleware
+- [ ] Setup tier: gratis (default rate limit) vs registered (rate limit lebih tinggi)
+- [ ] Update rate limiter: per-IP → per-API-key (kalau ada key), fallback per-IP
+- [ ] Dokumentasikan cara daftar API key di README
+
+### 2.4 Performance Tuning
+
+- [ ] Load test: 50 concurrent request, pastikan p95 sesuai NFR
+- [ ] Evaluasi SQLite file size, monitor startup time
+- [ ] Pertimbangkan connection pooling kalau perlu (bun:sqlite biasanya tidak perlu)
+
+### 2.5 Data Refresh Pipeline
+
+- [ ] Dokumentasikan proses re-seed manual (ketika ada pemekaran daerah dari Kemendagri)
+- [ ] Pertimbangkan script `scripts/refresh-data.ts` — pull data terbaru, rebuild, validate
+
+---
+
+## Phase 3 — V3 (Opsional)
+
+Target: fitur lanjutan berdasarkan kebutuhan komunitas.
+
+### 3.1 SpatiaLite / Spatial Extensions
+
+- [ ] Evaluasi kebutuhan geospasial lanjutan dari komunitas pengguna
+- [ ] Jika diperlukan: integrasi SpatiaLite atau ekstensi spasial lain
+- [ ] Advanced spatial queries (bounding box, polygon containment, dll)
+
+### 3.2 Edge Deployment (Evaluasi)
+
+- [ ] Evaluasi apakah traffic/latency menuntut edge distribution
+- [ ] Jika ya: migrasi ke Cloudflare Workers + D1/R2 (ARCHITECTURE.md section 8: V2 Edge)
+- [ ] Adaptasi `src/db/connection.ts` untuk D1 driver
+
+### 3.3 Enhanced Data Sources
+
+- [ ] Integrasi sumber data tambahan (kalau tersedia)
+- [ ] Pertimbangkan data historis (perubahan wilayah dari waktu ke waktu)
+- [ ] Evaluasi akurasi data dari waktu ke waktu, dokumentasikan perubahan
+
+---
+
+## Monitoring & Maintenance (Ongoing)
+
+- [ ] Pantau coverage data: persentase desa dengan kode pos lengkap + lat/lng
+- [ ] Pantau error rate dan latency dari production logs
+- [ ] Update dataset berkala (ketika ada perubahan wilayah administratif)
+- [ ] Review dan merge PR kontributor secara berkala
+- [ ] Update CHANGELOG.md setiap rilis
