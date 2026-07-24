@@ -1,9 +1,10 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { logger } from "hono/logger";
+import { logger as honerLogger } from "hono/logger";
 import { cors } from "hono/cors";
 import { compress } from "hono/compress";
 import { secureHeaders } from "hono/secure-headers";
 import { successResponse } from "@/lib/response";
+import { logger } from "@/lib/logger";
 import { errorHandler } from "@/middleware/error-handler";
 import { rateLimiter } from "@/middleware/rate-limit";
 import { cacheControl } from "@/middleware/cache-control";
@@ -17,7 +18,7 @@ import { registerPostalCodesRoutes } from "@/routes/postal-codes.route";
 
 const app = new OpenAPIHono();
 
-app.use("*", logger());
+app.use("*", honerLogger());
 app.use("*", secureHeaders());
 app.use(
   "*",
@@ -102,7 +103,12 @@ app.get("/docs", (c) => {
 
 export { app };
 
+const port = Number(process.env.PORT) || 3000;
+const env = process.env.NODE_ENV || "development";
+
+logger.info({ port, env }, "Starting API Wilayah Indonesia");
+
 export default {
-  port: Number(process.env.PORT) || 3000,
+  port,
   fetch: app.fetch,
 };

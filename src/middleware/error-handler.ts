@@ -1,8 +1,9 @@
 import type { ErrorHandler } from "hono";
 import { errorResponse } from "@/lib/response";
+import { logger } from "@/lib/logger";
 
 export const errorHandler: ErrorHandler = (err, c) => {
-  console.error(`[ERROR] ${err.message}`, err.stack);
+  logger.error({ err, path: c.req.path, method: c.req.method }, "Request error");
 
   if (err.message.includes("not found") || err.message.includes("Not Found")) {
     return c.json(errorResponse("NOT_FOUND", err.message), 404);

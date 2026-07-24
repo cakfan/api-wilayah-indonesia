@@ -117,8 +117,12 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.12 Observability
 
-- [ ] Log setiap request: method, path, status, response time (ARCHITECTURE.md section 11)
-- [ ] Endpoint `/health` return DB connection status + build timestamp
+- [x] Log setiap request: method, path, status, response time (ARCHITECTURE.md section 11)
+- [x] Structured logging untuk startup (host, port, env)
+- [x] Logging untuk errors di global error handler
+- [x] Slow query logging (>100ms) di repository layer
+- [x] Log format konsisten (JSON di production, pino-pretty di development)
+- [x] Endpoint `/health` return DB connection status + build timestamp
 
 ---
 
