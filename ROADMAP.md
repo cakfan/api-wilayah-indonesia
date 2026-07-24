@@ -86,12 +86,12 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.9 Testing
 
-- [ ] Setup test database (SQLite dengan subset data kecil)
-- [ ] Unit test `src/lib/pagination.ts`
-- [ ] Unit test `src/lib/response.ts`
-- [ ] Unit test `src/repositories/region.repository.ts` — test semua query terhadap test DB
-- [ ] Integration test semua route — request/response format, status code, error case (404, invalid param)
-- [ ] Jalankan `validate-data.ts` sebagai test — fail kalau ada orphan record
+- [x] Setup test database (SQLite dengan subset data kecil)
+- [x] Unit test `src/lib/pagination.ts`
+- [x] Unit test `src/lib/response.ts`
+- [x] Unit test `src/repositories/region.repository.ts` — test semua query terhadap test DB
+- [x] Integration test semua route — request/response format, status code, error case (404, invalid param)
+- [x] Jalankan `validate-data.ts` sebagai test — fail kalau ada orphan record
 - [ ] Pastikan p95 latency < 100ms single lookup, < 300ms search/list (NFR)
 
 ### 1.10 CI/CD Pipeline
