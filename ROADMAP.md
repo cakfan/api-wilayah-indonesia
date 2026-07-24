@@ -108,11 +108,11 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.11 Open Source Preparation
 
-- [ ] Buat `README.md` — deskripsi project, quick start, endpoint list, attribution (Kemendagri, OSM/ODbL, kodepos)
-- [ ] Buat `CONTRIBUTING.md` — panduan kontributor (report data via GitHub Issues/PR)
-- [ ] Buat `CHANGELOG.md` — catat versi pertama
-- [ ] Pilih lisensi: MIT (PRD section 11)
-- [ ] Setup issue templates di GitHub (bug report, data correction report)
+- [x] Buat `README.md` — deskripsi project, quick start, endpoint list, attribution (Kemendagri, OSM/ODbL, kodepos)
+- [x] Buat `CONTRIBUTING.md` — panduan kontributor (report data via GitHub Issues/PR)
+- [x] Buat `CHANGELOG.md` — catat versi pertama
+- [x] Pilih lisensi: MIT (PRD section 11)
+- [x] Setup issue templates di GitHub (bug report, data correction)
 - [ ] Setup branch protection di GitHub
 
 ### 1.12 Observability
