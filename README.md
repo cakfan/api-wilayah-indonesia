@@ -61,11 +61,23 @@ bun run validate-data
 
 ## Data Sources
 
-- **Kode wilayah:** Kemendagri
+- **Kode wilayah:** Kemendagri (38 provinsi, 514 kab/kota, 7.285 kecamatan, 83.762 desa/kelurahan)
 - **Kode pos:** Dataset open-source kode pos Indonesia
 - **Lat/Lng:** OpenStreetMap Nominatim (titik administratif, bukan alamat presisi)
 
 > **Catatan:** Koordinat yang ditampilkan adalah titik pusat administratif wilayah, bukan lokasi alamat presisi. Jangan gunakan untuk navigasi presisi.
+
+## Data Coverage
+
+Saat ini, kode pos dan koordinat lat/lng **belum tersedia** untuk sebagian besar desa/kelurahan dalam dataset. Field `postal_code`, `latitude`, dan `longitude` pada endpoint `/api/v1/villages/:code` akan bernilai `null` untuk data yang belum dilengkapi.
+
+| Field | Status | Sumber |
+|-------|--------|--------|
+| Kode wilayah (4 level) | Lengkap | Kemendagri |
+| Kode pos | Belum tersedia (0%) | Perlu kontribusi |
+| Lat/Lng | Belum tersedia (0%) | Perlu kontribusi |
+
+Kontributor dipersilakan membantu melengkapi data kode pos dan koordinat melalui [GitHub Issues](../../issues) atau pull request. Lihat [CONTRIBUTING.md](CONTRIBUTING.md) untuk panduan.
 
 ## Attribution
 

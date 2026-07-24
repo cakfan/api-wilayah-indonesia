@@ -82,7 +82,7 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 - [x] Setup `@hono/zod-openapi` di semua route — FR-12
 - [x] Setup Swagger UI endpoint di `/docs`
 - [x] Setup `/openapi.json` endpoint
-- [ ] Dokumentasikan coverage gap kode pos & lat/lng di docs (PRD section 7)
+- [x] Dokumentasikan coverage gap kode pos & lat/lng di docs (PRD section 7)
 
 ### 1.9 Testing
 
@@ -92,7 +92,7 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 - [x] Unit test `src/repositories/region.repository.ts` — test semua query terhadap test DB
 - [x] Integration test semua route — request/response format, status code, error case (404, invalid param)
 - [x] Jalankan `validate-data.ts` sebagai test — fail kalau ada orphan record
-- [ ] Pastikan p95 latency < 100ms single lookup, < 300ms search/list (NFR)
+- [x] Pastikan p95 latency < 100ms single lookup, < 300ms search/list (NFR)
 
 ### 1.10 CI/CD Pipeline
 
