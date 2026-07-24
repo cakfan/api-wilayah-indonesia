@@ -96,15 +96,15 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.10 CI/CD Pipeline
 
-- [ ] Buat GitHub Actions workflow (ARCHITECTURE.md section 10):
-  - [ ] `bun install`
-  - [ ] `bun run lint`
-  - [ ] `bun run build-data`
-  - [ ] `bun run validate-data`
-  - [ ] `bun test`
-  - [ ] Deploy ke Railway/Render (on main branch)
+- [x] Buat GitHub Actions workflow (ARCHITECTURE.md section 10):
+  - [x] `bun install`
+  - [x] `bun run lint`
+  - [x] `bun run build-data`
+  - [x] `bun run validate-data`
+  - [x] `bun test`
+  - [ ] (on main branch) deploy ke Railway/Render
 - [ ] Setup Railway/Render project, connect ke GitHub repo
-- [ ] Pastikan `regions.sqlite` di-generate saat CI, tidak di-commit (ARCHITECTURE.md section 12: keputusan #2)
+- [x] Pastikan `regions.sqlite` di-generate saat CI, tidak di-commit (ARCHITECTURE.md section 12: keputusan #2)
 
 ### 1.11 Open Source Preparation
 
