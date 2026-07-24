@@ -30,12 +30,12 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.3 Core Application
 
-- [ ] Setup entry point `src/index.ts` — Hono app + middleware global (ARCHITECTURE.md section 7)
-- [ ] Buat `src/db/connection.ts` — koneksi `bun:sqlite` read-only mode (ARCHITECTURE.md section 2: prinsip stateless)
-- [ ] Buat `src/schemas/region.schema.ts` — Zod schemas untuk semua request params, query params, dan response body
-- [ ] Buat `src/types/region.types.ts` — tipe TypeScript dari Zod schemas
-- [ ] Buat `src/lib/pagination.ts` — helper hitung page/totalPages, clamp limit
-- [ ] Buat `src/lib/response.ts` — helper format response envelope (data+meta / error)
+- [x] Setup entry point `src/index.ts` — Hono app + middleware global (ARCHITECTURE.md section 7)
+- [x] Buat `src/db/connection.ts` — koneksi `bun:sqlite` read-only mode (ARCHITECTURE.md section 2: prinsip stateless)
+- [x] Buat `src/schemas/region.schema.ts` — Zod schemas untuk semua request params, query params, dan response body
+- [x] Buat `src/types/region.types.ts` — tipe TypeScript dari Zod schemas
+- [x] Buat `src/lib/pagination.ts` — helper hitung page/totalPages, clamp limit
+- [x] Buat `src/lib/response.ts` — helper format response envelope (data+meta / error)
 
 ### 1.4 Repository Layer
 
