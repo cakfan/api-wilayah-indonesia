@@ -5,13 +5,6 @@ export interface SuccessResponse<T> {
   meta?: Meta;
 }
 
-export interface ErrorResponse {
-  error: {
-    code: string;
-    message: string;
-  };
-}
-
 export function successResponse<T>(data: T, meta?: Meta): SuccessResponse<T> {
   const response: SuccessResponse<T> = { data };
   if (meta) {
@@ -20,7 +13,7 @@ export function successResponse<T>(data: T, meta?: Meta): SuccessResponse<T> {
   return response;
 }
 
-export function errorResponse(code: string, message: string): ErrorResponse {
+export function errorResponse(code: string, message: string) {
   return {
     error: {
       code,

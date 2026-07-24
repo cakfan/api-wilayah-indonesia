@@ -1,9 +1,61 @@
 import { z } from "zod";
+import { extendZodWithOpenApi } from "@hono/zod-openapi";
 
-const codeParam = z.string().openapi({
-  param: { name: "code", in: "path" },
-  example: "11",
-});
+extendZodWithOpenApi(z);
+
+const provinceSchema = z
+  .object({
+    code: z.string().openapi({ example: "11" }),
+    name: z.string().openapi({ example: "ACEH" }),
+  })
+  .openapi("Province");
+
+const regencySchema = z
+  .object({
+    code: z.string().openapi({ example: "11.01" }),
+    province_code: z.string().openapi({ example: "11" }),
+    name: z.string().openapi({ example: "KAB. ACEH SELATAN" }),
+    type: z.enum(["kabupaten", "kota"]).openapi({ example: "kabupaten" }),
+  })
+  .openapi("Regency");
+
+const districtSchema = z
+  .object({
+    code: z.string().openapi({ example: "11.01.01" }),
+    regency_code: z.string().openapi({ example: "11.01" }),
+    name: z.string().openapi({ example: "Kec. Bakongan" }),
+  })
+  .openapi("District");
+
+const villageSchema = z
+  .object({
+    code: z.string().openapi({ example: "11.01.01.2001" }),
+    district_code: z.string().openapi({ example: "11.01.01" }),
+    name: z.string().openapi({ example: "Desa Bakongan" }),
+    type: z.enum(["kelurahan", "desa"]).openapi({ example: "desa" }),
+    postal_code: z.string().nullable().openapi({ example: "23773" }),
+    latitude: z.number().nullable().openapi({ example: 2.9561 }),
+    longitude: z.number().nullable().openapi({ example: 97.2847 }),
+  })
+  .openapi("Village");
+
+const metaSchema = z
+  .object({
+    total: z.number().openapi({ example: 38 }),
+    page: z.number().openapi({ example: 1 }),
+    limit: z.number().openapi({ example: 50 }),
+    totalPages: z.number().openapi({ example: 1 }),
+  })
+  .openapi("Meta");
+
+const errorSchema = z
+  .object({
+    error: z.object({
+      code: z.string().openapi({ example: "NOT_FOUND" }),
+      message: z.string().openapi({ example: "Province with code '99' not found" }),
+    }),
+  })
+  .openapi("Error");
 
 const pageQuery = z.coerce.number().int().min(1).default(1).openapi({
   param: { name: "page", in: "query" },
@@ -20,112 +72,23 @@ const qQuery = z.string().min(1).openapi({
   example: "Jakarta",
 });
 
-const typeQuery = z.enum(["provinsi", "kabupaten", "kota", "kecamatan", "kelurahan", "desa"]).optional().openapi({
-  param: { name: "type", in: "query" },
-});
-
-const provinceSchema = z.object({
-  code: z.string(),
-  name: z.string(),
-});
-
-const regencySchema = z.object({
-  code: z.string(),
-  province_code: z.string(),
-  name: z.string(),
-  type: z.enum(["kabupaten", "kota"]),
-});
-
-const districtSchema = z.object({
-  code: z.string(),
-  regency_code: z.string(),
-  name: z.string(),
-});
-
-const villageSchema = z.object({
-  code: z.string(),
-  district_code: z.string(),
-  name: z.string(),
-  type: z.enum(["kelurahan", "desa"]),
-  postal_code: z.string().nullable(),
-  latitude: z.number().nullable(),
-  longitude: z.number().nullable(),
-});
-
-const metaSchema = z.object({
-  total: z.number(),
-  page: z.number(),
-  limit: z.number(),
-  totalPages: z.number(),
-});
-
-const errorSchema = z.object({
-  error: z.object({
-    code: z.string(),
-    message: z.string(),
-  }),
-});
-
-const successProvincesResponse = z.object({
-  data: z.array(provinceSchema),
-  meta: metaSchema,
-});
-
-const successProvinceResponse = z.object({
-  data: provinceSchema,
-});
-
-const successRegenciesResponse = z.object({
-  data: z.array(regencySchema),
-  meta: metaSchema,
-});
-
-const successRegencyResponse = z.object({
-  data: regencySchema,
-});
-
-const successDistrictsResponse = z.object({
-  data: z.array(districtSchema),
-  meta: metaSchema,
-});
-
-const successDistrictResponse = z.object({
-  data: districtSchema,
-});
-
-const successVillagesResponse = z.object({
-  data: z.array(villageSchema),
-  meta: metaSchema,
-});
-
-const successVillageResponse = z.object({
-  data: villageSchema,
-});
-
-const searchResponse = z.object({
-  data: z.array(z.union([provinceSchema, regencySchema, districtSchema, villageSchema])),
-  meta: metaSchema,
-});
+const typeQuery = z
+  .enum(["provinsi", "kabupaten", "kota", "kecamatan", "kelurahan", "desa"])
+  .optional()
+  .openapi({
+    param: { name: "type", in: "query" },
+    example: "kota",
+  });
 
 export {
-  codeParam,
-  pageQuery,
-  limitQuery,
-  qQuery,
-  typeQuery,
   provinceSchema,
   regencySchema,
   districtSchema,
   villageSchema,
   metaSchema,
   errorSchema,
-  successProvincesResponse,
-  successProvinceResponse,
-  successRegenciesResponse,
-  successRegencyResponse,
-  successDistrictsResponse,
-  successDistrictResponse,
-  successVillagesResponse,
-  successVillageResponse,
-  searchResponse,
+  pageQuery,
+  limitQuery,
+  qQuery,
+  typeQuery,
 };

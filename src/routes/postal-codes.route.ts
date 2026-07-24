@@ -1,30 +1,46 @@
-import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
+import { createRoute, type OpenAPIHono } from "@hono/zod-openapi";
 import { z } from "zod";
 import { regionService } from "@/services/region.service";
 import { successResponse } from "@/lib/response";
-
-const postalCodesRouter = new Hono();
+import { villageSchema, metaSchema, pageQuery, limitQuery } from "@/schemas/region.schema";
 
 const paramsSchema = z.object({
-  code: z.string().regex(/^\d{5}$/, "Postal code must be 5 digits"),
+  code: z.string().regex(/^\d{5}$/, "Postal code must be 5 digits").openapi({
+    param: { name: "code", in: "path" },
+    example: "10310",
+  }),
 });
 
-const querySchema = z.object({
-  page: z.coerce.number().int().min(1).default(1),
-  limit: z.coerce.number().int().min(1).max(200).default(50),
+const getPostalCodesRoute = createRoute({
+  method: "get",
+  path: "/{code}",
+  tags: ["Postal Codes"],
+  summary: "Lookup villages by postal code",
+  description: "Get a list of villages that match a given 5-digit postal code",
+  request: {
+    params: paramsSchema,
+    query: z.object({ page: pageQuery, limit: limitQuery }),
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            data: z.array(villageSchema),
+            meta: metaSchema,
+          }),
+        },
+      },
+      description: "List of villages matching the postal code",
+    },
+  },
 });
 
-postalCodesRouter.get(
-  "/:code",
-  zValidator("param", paramsSchema),
-  zValidator("query", querySchema),
-  (c) => {
+export function registerPostalCodesRoutes(app: OpenAPIHono) {
+  app.openapi(getPostalCodesRoute, (c) => {
     const { code } = c.req.valid("param");
     const { page, limit } = c.req.valid("query");
     const result = regionService.getVillagesByPostalCode(code, page, limit);
-    return c.json(successResponse(result.data, result.meta));
-  }
-);
-
-export default postalCodesRouter;
+    return c.json(successResponse(result.data, result.meta), 200);
+  });
+}

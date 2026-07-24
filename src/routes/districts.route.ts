@@ -1,34 +1,91 @@
-import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
+import { createRoute, type OpenAPIHono } from "@hono/zod-openapi";
 import { z } from "zod";
 import { regionService } from "@/services/region.service";
 import { successResponse, errorResponse } from "@/lib/response";
-
-const districtsRouter = new Hono();
+import { districtSchema, villageSchema, metaSchema, pageQuery, limitQuery } from "@/schemas/region.schema";
 
 const paramsSchema = z.object({
-  code: z.string().min(1),
+  code: z.string().min(1).openapi({
+    param: { name: "code", in: "path" },
+    example: "11.01.01",
+  }),
 });
 
-const querySchema = z.object({
-  page: z.coerce.number().int().min(1).default(1),
-  limit: z.coerce.number().int().min(1).max(200).default(50),
+const getDistrictRoute = createRoute({
+  method: "get",
+  path: "/{code}",
+  tags: ["Districts"],
+  summary: "Get district by code",
+  description: "Get detail of a single district (kecamatan) by its code",
+  request: { params: paramsSchema },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.object({ data: districtSchema }),
+        },
+      },
+      description: "District detail",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            error: z.object({ code: z.string(), message: z.string() }),
+          }),
+        },
+      },
+      description: "District not found",
+    },
+  },
 });
 
-districtsRouter.get("/:code", zValidator("param", paramsSchema), (c) => {
-  const { code } = c.req.valid("param");
-  const district = regionService.getDistrictByCode(code);
-  if (!district) {
-    return c.json(errorResponse("NOT_FOUND", `District with code '${code}' not found`), 404);
-  }
-  return c.json(successResponse(district));
+const listVillagesRoute = createRoute({
+  method: "get",
+  path: "/{code}/villages",
+  tags: ["Districts"],
+  summary: "List villages in a district",
+  description: "Get a paginated list of villages (kelurahan/desa) within a district",
+  request: {
+    params: paramsSchema,
+    query: z.object({ page: pageQuery, limit: limitQuery }),
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            data: z.array(villageSchema),
+            meta: metaSchema,
+          }),
+        },
+      },
+      description: "List of villages",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            error: z.object({ code: z.string(), message: z.string() }),
+          }),
+        },
+      },
+      description: "District not found",
+    },
+  },
 });
 
-districtsRouter.get(
-  "/:code/villages",
-  zValidator("param", paramsSchema),
-  zValidator("query", querySchema),
-  (c) => {
+export function registerDistrictsRoutes(app: OpenAPIHono) {
+  app.openapi(getDistrictRoute, (c) => {
+    const { code } = c.req.valid("param");
+    const district = regionService.getDistrictByCode(code);
+    if (!district) {
+      return c.json(errorResponse("NOT_FOUND", `District with code '${code}' not found`), 404);
+    }
+    return c.json(successResponse(district), 200);
+  });
+
+  app.openapi(listVillagesRoute, (c) => {
     const { code } = c.req.valid("param");
     const { page, limit } = c.req.valid("query");
 
@@ -38,8 +95,6 @@ districtsRouter.get(
     }
 
     const result = regionService.getVillagesByDistrict(code, page, limit);
-    return c.json(successResponse(result.data, result.meta));
-  }
-);
-
-export default districtsRouter;
+    return c.json(successResponse(result.data, result.meta), 200);
+  });
+}
