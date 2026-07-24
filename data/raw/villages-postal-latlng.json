@@ -1,0 +1,20 @@
+[
+  { "code": "11.01.01.2001", "district_code": "11.01.01", "name": "Desa Bakongan", "type": "desa", "postal_code": "23773", "latitude": 2.9561, "longitude": 97.2847 },
+  { "code": "11.01.01.2002", "district_code": "11.01.01", "name": "Desa Bakongan Timur", "type": "desa", "postal_code": "23773", "latitude": 2.9488, "longitude": 97.2934 },
+  { "code": "11.01.02.2001", "district_code": "11.01.02", "name": "Desa Kluet Selatan", "type": "desa", "postal_code": "23774", "latitude": 3.1023, "longitude": 97.3512 },
+  { "code": "11.02.01.2001", "district_code": "11.02.01", "name": "Desa Lawe Alas", "type": "desa", "postal_code": "24651", "latitude": 3.4645, "longitude": 97.8312 },
+  { "code": "11.71.01.1001", "district_code": "11.71.01", "name": "Gampong Lambung", "type": "kelurahan", "postal_code": "23111", "latitude": 5.5483, "longitude": 95.3217 },
+  { "code": "11.71.01.1002", "district_code": "11.71.01", "name": "Gampong Keuramat", "type": "kelurahan", "postal_code": "23111", "latitude": 5.5512, "longitude": 95.3188 },
+  { "code": "11.71.02.1001", "district_code": "11.71.02", "name": "Kel. Mulia", "type": "kelurahan", "postal_code": "23113", "latitude": 5.5601, "longitude": 95.3178 },
+  { "code": "12.01.01.2001", "district_code": "12.01.01", "name": "Desa Barus", "type": "desa", "postal_code": "22381", "latitude": 2.0345, "longitude": 98.4012 },
+  { "code": "12.71.01.1001", "district_code": "12.71.01", "name": "Kel. Petisah", "type": "kelurahan", "postal_code": "20112", "latitude": 3.5765, "longitude": 98.6812 },
+  { "code": "31.01.01.2001", "district_code": "31.01.01", "name": "Pulau Untung Jawa", "type": "desa", "postal_code": "14510", "latitude": -5.7123, "longitude": 106.5345 },
+  { "code": "31.71.01.1001", "district_code": "31.71.01", "name": "Kel. Menteng", "type": "kelurahan", "postal_code": "10310", "latitude": -6.1878, "longitude": 106.8367 },
+  { "code": "31.71.01.1002", "district_code": "31.71.01", "name": "Kel. Paseban", "type": "kelurahan", "postal_code": "10320", "latitude": -6.1845, "longitude": 106.8423 },
+  { "code": "31.71.02.1001", "district_code": "31.71.02", "name": "Kel. Gambir", "type": "kelurahan", "postal_code": "10110", "latitude": -6.1750, "longitude": 106.8198 },
+  { "code": "31.72.01.1001", "district_code": "31.72.01", "name": "Kel. Tanjung Priok", "type": "kelurahan", "postal_code": "14310", "latitude": -6.1219, "longitude": 106.8748 },
+  { "code": "32.01.01.2001", "district_code": "32.01.01", "name": "Desa Ciawi", "type": "desa", "postal_code": "16720", "latitude": -6.6345, "longitude": 106.8312 },
+  { "code": "32.73.01.1001", "district_code": "32.73.01", "name": "Kel. Pasteur", "type": "kelurahan", "postal_code": "40161", "latitude": -6.8912, "longitude": 107.5876 },
+  { "code": "35.01.01.2001", "district_code": "35.01.01", "name": "Desa Panceng", "type": "desa", "postal_code": "61154", "latitude": -6.9876, "longitude": 112.5432 },
+  { "code": "35.71.01.1001", "district_code": "35.71.01", "name": "Kel. Genteng", "type": "kelurahan", "postal_code": "60275", "latitude": -7.2578, "longitude": 112.7412 }
+]

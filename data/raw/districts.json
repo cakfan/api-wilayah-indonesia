@@ -1,0 +1,17 @@
+[
+  { "code": "11.01.01", "regency_code": "11.01", "name": "Kec. Bakongan" },
+  { "code": "11.01.02", "regency_code": "11.01", "name": "Kec. Kluet Selatan" },
+  { "code": "11.02.01", "regency_code": "11.02", "name": "Kec. Lawe Alas" },
+  { "code": "11.71.01", "regency_code": "11.71", "name": "Kec. Baiturrahman" },
+  { "code": "11.71.02", "regency_code": "11.71", "name": "Kec. Kuta Alam" },
+  { "code": "12.01.01", "regency_code": "12.01", "name": "Kec. Barus" },
+  { "code": "12.71.01", "regency_code": "12.71", "name": "Kec. Medan Baru" },
+  { "code": "31.01.01", "regency_code": "31.01", "name": "Kec. Kepulauan Seribu Utara" },
+  { "code": "31.71.01", "regency_code": "31.71", "name": "Kec. Menteng" },
+  { "code": "31.71.02", "regency_code": "31.71", "name": "Kec. Gambir" },
+  { "code": "31.72.01", "regency_code": "31.72", "name": "Kec. Tanjung Priok" },
+  { "code": "32.01.01", "regency_code": "32.01", "name": "Kec. Ciawi" },
+  { "code": "32.73.01", "regency_code": "32.73", "name": "Kec. Bandung Wetan" },
+  { "code": "35.01.01", "regency_code": "35.01", "name": "Kec. Panceng" },
+  { "code": "35.71.01", "regency_code": "35.71", "name": "Kec. Genteng" }
+]

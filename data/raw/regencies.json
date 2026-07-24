@@ -1,0 +1,14 @@
+[
+  { "code": "11.01", "province_code": "11", "name": "KAB. ACEH SELATAN", "type": "kabupaten" },
+  { "code": "11.02", "province_code": "11", "name": "KAB. ACEH TENGGARA", "type": "kabupaten" },
+  { "code": "11.71", "province_code": "11", "name": "KOTA BANDA ACEH", "type": "kota" },
+  { "code": "12.01", "province_code": "12", "name": "KAB. TAPANULI TENGAH", "type": "kabupaten" },
+  { "code": "12.71", "province_code": "12", "name": "KOTA MEDAN", "type": "kota" },
+  { "code": "31.01", "province_code": "31", "name": "KAB. KEPULAUAN SERIBU", "type": "kabupaten" },
+  { "code": "31.71", "province_code": "31", "name": "KOTA JAKARTA PUSAT", "type": "kota" },
+  { "code": "31.72", "province_code": "31", "name": "KOTA JAKARTA UTARA", "type": "kota" },
+  { "code": "32.01", "province_code": "32", "name": "KAB. BOGOR", "type": "kabupaten" },
+  { "code": "32.73", "province_code": "32", "name": "KOTA BANDUNG", "type": "kota" },
+  { "code": "35.01", "province_code": "35", "name": "KAB. GRESIK", "type": "kabupaten" },
+  { "code": "35.71", "province_code": "35", "name": "KOTA SURABAYA", "type": "kota" }
+]
