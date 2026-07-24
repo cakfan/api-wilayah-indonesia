@@ -79,9 +79,9 @@ Target: semua endpoint FR-1 s.d. FR-12 berfungsi, data tervalidasi, API publik g
 
 ### 1.8 API Documentation
 
-- [ ] Setup `@hono/zod-openapi` di semua route — FR-12
-- [ ] Setup Swagger UI endpoint di `/docs`
-- [ ] Setup `/openapi.json` endpoint
+- [x] Setup `@hono/zod-openapi` di semua route — FR-12
+- [x] Setup Swagger UI endpoint di `/docs`
+- [x] Setup `/openapi.json` endpoint
 - [ ] Dokumentasikan coverage gap kode pos & lat/lng di docs (PRD section 7)
 
 ### 1.9 Testing
