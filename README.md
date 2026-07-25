@@ -77,7 +77,7 @@ bun run validate-data
 
 Field `postal_code`, `latitude`, dan `longitude` akan bernilai `null` untuk ~14.5% desa yang belum tercakup (terutama di Papua).
 
-Kontributor dipersilakan membantu melengkapi data kode pos dan koordinat melalui [GitHub Issues](../../issues) atau pull request. Lihat [CONTRIBUTING.md](CONTRIBUTING.md) untuk panduan.
+Kontributor dipersilakan membantu melengkapi data kode pos dan koordinat melalui [GitHub Issues](../../issues) atau fork & pull request. Lihat [CONTRIBUTING.md](CONTRIBUTING.md) untuk panduan.
 
 ## Attribution
 

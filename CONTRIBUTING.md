@@ -36,8 +36,8 @@ Jika kamu ingin memperbaiki kode atau menambah fitur:
 ## Development Setup
 
 ```bash
-# Clone repository
-git clone https://github.com/username/wilayah-indonesia.git
+# Fork repository ini melalui GitHub, lalu clone fork kamu
+git clone https://github.com/<username>/wilayah-indonesia.git
 cd wilayah-indonesia
 
 # Install dependencies
