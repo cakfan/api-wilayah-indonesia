@@ -23,7 +23,7 @@ Server berjalan di `http://localhost:3000`. Buka `http://localhost:3000/docs` un
 - **Framework:** Hono.js
 - **Database:** SQLite (`bun:sqlite`)
 - **Validation:** Zod + `@hono/zod-openapi`
-- **Logging:** Hono logger
+- **Logging:** Pino
 
 ## Endpoint
 
