@@ -5,8 +5,10 @@ export interface SuccessResponse<T> {
   meta?: Meta;
 }
 
-export function successResponse<T>(data: T, meta?: Meta): SuccessResponse<T> {
-  const response: SuccessResponse<T> = { data };
+export function successResponse<T>(data: T, meta: Meta): { data: T; meta: Meta };
+export function successResponse<T>(data: T, meta?: undefined): { data: T };
+export function successResponse<T>(data: T, meta?: Meta): { data: T; meta?: Meta } {
+  const response: { data: T; meta?: Meta } = { data };
   if (meta) {
     response.meta = meta;
   }

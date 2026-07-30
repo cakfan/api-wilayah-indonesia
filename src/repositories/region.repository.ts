@@ -1,4 +1,4 @@
-import type { Database } from "bun:sqlite";
+import type { Database, SQLQueryBindings } from "bun:sqlite";
 import { getDb } from "../db/connection";
 import type { Province, Regency, District, Village } from "../types/region.types";
 import { getOffset } from "../lib/pagination";
@@ -6,7 +6,7 @@ import { logger } from "../lib/logger";
 
 const SLOW_QUERY_MS = 100;
 
-function timedQuery<T>(db: Database, sql: string, ...params: unknown[]): T {
+function timedQuery<T>(db: Database, sql: string, ...params: SQLQueryBindings[]): T {
   const start = performance.now();
   const result = db.query(sql).all(...params) as T;
   const duration = performance.now() - start;
@@ -16,7 +16,7 @@ function timedQuery<T>(db: Database, sql: string, ...params: unknown[]): T {
   return result;
 }
 
-function timedGet<T>(db: Database, sql: string, ...params: unknown[]): T {
+function timedGet<T>(db: Database, sql: string, ...params: SQLQueryBindings[]): T {
   const start = performance.now();
   const result = db.query(sql).get(...params) as T;
   const duration = performance.now() - start;
