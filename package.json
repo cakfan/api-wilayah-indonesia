@@ -24,7 +24,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "build": "bun run build-data",
+    "build": "bun run build-data && bun -e \"Bun.write(Bun.file('src/regions.sqlite'), Bun.file('data/db/regions.sqlite'))\"",
     "build-data": "bun run scripts/build-data.ts",
     "validate-data": "bun run scripts/validate-data.ts",
     "test": "bun test",

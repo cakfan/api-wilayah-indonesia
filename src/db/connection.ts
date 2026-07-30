@@ -15,6 +15,7 @@ function resolveDbPath(): string {
   logger.info({ moduleDir, cwd: process.cwd(), vercel: process.env.VERCEL }, "DB path resolution");
 
   const candidates = [
+    join(moduleDir, "..", "regions.sqlite"),
     join(moduleDir, "..", "..", "data", "db", "regions.sqlite"),
     join(process.cwd(), "data", "db", "regions.sqlite"),
   ];

@@ -37,3 +37,4 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 data/db/regions.sqlite
 data/db/regions.sqlite-shm
 data/db/regions.sqlite-wal
+src/regions.sqlite
