@@ -2,8 +2,14 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "bunVersion": "1.x",
   "functions": {
-    "src/index.ts": {
-      "includeFiles": "data/db/**"
+    "api/index.ts": {
+      "includeFiles": [
+        "data/db/regions.sqlite",
+        "dist/index.js"
+      ]
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index" }
+  ]
 }
