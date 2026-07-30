@@ -1,5 +1,5 @@
 import { Database } from "bun:sqlite";
-import { readFileSync, existsSync } from "fs";
+import { mkdirSync, readFileSync, existsSync } from "fs";
 import { join } from "path";
 
 const DB_DIR = join(import.meta.dir, "..", "data", "db");
@@ -90,6 +90,7 @@ const FTS_SCHEMA = `
 function build() {
   console.log("Building regions.sqlite...");
 
+  mkdirSync(DB_DIR, { recursive: true });
   const db = new Database(DB_PATH);
 
   db.exec("PRAGMA journal_mode=WAL");
