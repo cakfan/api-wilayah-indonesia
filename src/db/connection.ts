@@ -45,7 +45,7 @@ let db: Database;
 
 export function getDb(): Database {
   if (!db) {
-    db = new Database(DB_PATH, { readonly: true });
+    db = new Database(DB_PATH);
   }
   return db;
 }

@@ -93,7 +93,7 @@ function build() {
   mkdirSync(DB_DIR, { recursive: true });
   const db = new Database(DB_PATH);
 
-  db.exec("PRAGMA journal_mode=WAL");
+  db.exec("PRAGMA journal_mode=DELETE");
   db.exec("PRAGMA foreign_keys=ON");
 
   console.log("Creating schema...");
