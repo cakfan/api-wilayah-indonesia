@@ -81,7 +81,14 @@ app.doc("/openapi.json", {
       "API publik read-only untuk data wilayah administratif Indonesia 4 level (Provinsi → Kabupaten/Kota → Kecamatan → Kelurahan/Desa) dengan kode pos dan koordinat lat/lng.",
     license: { name: "MIT" },
   },
-  servers: [{ url: "http://localhost:3000", description: "Development" }],
+  servers: [
+    {
+      url: process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000",
+      description: process.env.VERCEL_ENV === "production" ? "Production" : "Development",
+    },
+  ],
 });
 
 app.get("/docs", (c) => {
