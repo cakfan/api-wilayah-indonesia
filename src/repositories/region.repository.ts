@@ -1,4 +1,4 @@
-import { Database } from "bun:sqlite";
+import type { Database } from "bun:sqlite";
 import { getDb } from "@/db/connection";
 import type { Province, Regency, District, Village } from "@/types/region.types";
 import { getOffset } from "@/lib/pagination";
@@ -26,51 +26,55 @@ function timedGet<T>(db: Database, sql: string, ...params: unknown[]): T {
   return result;
 }
 
-function createRepository(db: Database) {
+function createRepository(dbFactory: () => Database) {
   return {
     findAllProvinces(): Province[] {
-      return timedQuery<Province[]>(db, "SELECT code, name FROM provinces ORDER BY code");
+      return timedQuery<Province[]>(dbFactory(), "SELECT code, name FROM provinces ORDER BY code");
     },
 
     findProvinceByCode(code: string): Province | undefined {
-      return timedGet<Province | undefined>(db, "SELECT code, name FROM provinces WHERE code = ?", code);
+      return timedGet<Province | undefined>(dbFactory(), "SELECT code, name FROM provinces WHERE code = ?", code);
     },
 
     findRegenciesByProvince(provinceCode: string, page: number, limit: number): { data: Regency[]; total: number } {
       const offset = getOffset(page, limit);
+      const db = dbFactory();
       const data = timedQuery<Regency[]>(db, "SELECT code, province_code, name, type FROM regencies WHERE province_code = ? ORDER BY code LIMIT ? OFFSET ?", provinceCode, limit, offset);
       const { total } = timedGet<{ total: number }>(db, "SELECT COUNT(*) as total FROM regencies WHERE province_code = ?", provinceCode);
       return { data, total };
     },
 
     findRegencyByCode(code: string): Regency | undefined {
-      return timedGet<Regency | undefined>(db, "SELECT code, province_code, name, type FROM regencies WHERE code = ?", code);
+      return timedGet<Regency | undefined>(dbFactory(), "SELECT code, province_code, name, type FROM regencies WHERE code = ?", code);
     },
 
     findDistrictsByRegency(regencyCode: string, page: number, limit: number): { data: District[]; total: number } {
       const offset = getOffset(page, limit);
+      const db = dbFactory();
       const data = timedQuery<District[]>(db, "SELECT code, regency_code, name FROM districts WHERE regency_code = ? ORDER BY code LIMIT ? OFFSET ?", regencyCode, limit, offset);
       const { total } = timedGet<{ total: number }>(db, "SELECT COUNT(*) as total FROM districts WHERE regency_code = ?", regencyCode);
       return { data, total };
     },
 
     findDistrictByCode(code: string): District | undefined {
-      return timedGet<District | undefined>(db, "SELECT code, regency_code, name FROM districts WHERE code = ?", code);
+      return timedGet<District | undefined>(dbFactory(), "SELECT code, regency_code, name FROM districts WHERE code = ?", code);
     },
 
     findVillagesByDistrict(districtCode: string, page: number, limit: number): { data: Village[]; total: number } {
       const offset = getOffset(page, limit);
+      const db = dbFactory();
       const data = timedQuery<Village[]>(db, "SELECT code, district_code, name, type, postal_code, latitude, longitude FROM villages WHERE district_code = ? ORDER BY code LIMIT ? OFFSET ?", districtCode, limit, offset);
       const { total } = timedGet<{ total: number }>(db, "SELECT COUNT(*) as total FROM villages WHERE district_code = ?", districtCode);
       return { data, total };
     },
 
     findVillageByCode(code: string): Village | undefined {
-      return timedGet<Village | undefined>(db, "SELECT code, district_code, name, type, postal_code, latitude, longitude FROM villages WHERE code = ?", code);
+      return timedGet<Village | undefined>(dbFactory(), "SELECT code, district_code, name, type, postal_code, latitude, longitude FROM villages WHERE code = ?", code);
     },
 
     searchRegions(q: string, type: string | undefined, page: number, limit: number): { data: (Province | Regency | District | Village)[]; total: number } {
       const offset = getOffset(page, limit);
+      const db = dbFactory();
 
       let typeCondition = "";
 
@@ -154,6 +158,7 @@ function createRepository(db: Database) {
 
     findVillagesByPostalCode(postalCode: string, page: number, limit: number): { data: Village[]; total: number } {
       const offset = getOffset(page, limit);
+      const db = dbFactory();
       const data = timedQuery<Village[]>(db, "SELECT code, district_code, name, type, postal_code, latitude, longitude FROM villages WHERE postal_code = ? ORDER BY code LIMIT ? OFFSET ?", postalCode, limit, offset);
       const { total } = timedGet<{ total: number }>(db, "SELECT COUNT(*) as total FROM villages WHERE postal_code = ?", postalCode);
       return { data, total };
@@ -161,6 +166,6 @@ function createRepository(db: Database) {
   };
 }
 
-export const regionRepository = createRepository(getDb());
+export const regionRepository = createRepository(getDb);
 
 export { createRepository };
