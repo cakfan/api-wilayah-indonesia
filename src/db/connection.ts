@@ -12,6 +12,8 @@ function resolveDbPath(): string {
   const candidates = [
     import.meta.dir && join(import.meta.dir, "..", "..", "data", "db", "regions.sqlite"),
     join(process.cwd(), "data", "db", "regions.sqlite"),
+    join("/var/task", "data", "db", "regions.sqlite"),
+    join("/var/task", "src", "data", "db", "regions.sqlite"),
   ];
 
   for (const p of candidates) {
@@ -21,7 +23,7 @@ function resolveDbPath(): string {
     }
   }
 
-  const fallback = candidates[candidates.length - 1]!;
+  const fallback = candidates[0] ?? join(process.cwd(), "data", "db", "regions.sqlite");
   logger.error({ candidates, fallback }, "Database file not found at any candidate path");
   return fallback;
 }
