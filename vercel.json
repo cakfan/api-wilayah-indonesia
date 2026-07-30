@@ -3,10 +3,7 @@
   "bunVersion": "1.x",
   "functions": {
     "api/index.ts": {
-      "includeFiles": [
-        "data/db/regions.sqlite",
-        "dist/index.js"
-      ]
+      "includeFiles": "data/db/regions.sqlite"
     }
   },
   "rewrites": [
