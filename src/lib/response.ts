@@ -1,4 +1,4 @@
-import type { Meta } from "@/types/region.types";
+import type { Meta } from "../types/region.types";
 
 export interface SuccessResponse<T> {
   data: T;

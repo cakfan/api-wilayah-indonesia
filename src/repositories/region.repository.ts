@@ -1,8 +1,8 @@
 import type { Database } from "bun:sqlite";
-import { getDb } from "@/db/connection";
-import type { Province, Regency, District, Village } from "@/types/region.types";
-import { getOffset } from "@/lib/pagination";
-import { logger } from "@/lib/logger";
+import { getDb } from "../db/connection";
+import type { Province, Regency, District, Village } from "../types/region.types";
+import { getOffset } from "../lib/pagination";
+import { logger } from "../lib/logger";
 
 const SLOW_QUERY_MS = 100;
 

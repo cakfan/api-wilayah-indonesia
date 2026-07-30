@@ -1,8 +1,8 @@
 import { createRoute, type OpenAPIHono } from "@hono/zod-openapi";
 import { z } from "zod";
-import { regionService } from "@/services/region.service";
-import { successResponse, errorResponse } from "@/lib/response";
-import { villageSchema } from "@/schemas/region.schema";
+import { regionService } from "../services/region.service";
+import { successResponse, errorResponse } from "../lib/response";
+import { villageSchema } from "../schemas/region.schema";
 
 const paramsSchema = z.object({
   code: z.string().min(1).openapi({

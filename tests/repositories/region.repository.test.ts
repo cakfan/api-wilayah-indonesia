@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "bun:test";
 import { createTestDb } from "../helpers";
-import { createRepository } from "@/repositories/region.repository";
+import { createRepository } from "../../src/repositories/region.repository";
 import type { Database } from "bun:sqlite";
 
 let db: Database;

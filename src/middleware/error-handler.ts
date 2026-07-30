@@ -1,6 +1,6 @@
 import type { ErrorHandler } from "hono";
-import { errorResponse } from "@/lib/response";
-import { logger } from "@/lib/logger";
+import { errorResponse } from "../lib/response";
+import { logger } from "../lib/logger";
 
 export const errorHandler: ErrorHandler = (err, c) => {
   logger.error({ err, path: c.req.path, method: c.req.method }, "Request error");

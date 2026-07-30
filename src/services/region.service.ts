@@ -1,5 +1,5 @@
-import { regionRepository } from "@/repositories/region.repository";
-import { calculatePagination } from "@/lib/pagination";
+import { regionRepository } from "../repositories/region.repository";
+import { calculatePagination } from "../lib/pagination";
 
 export const regionService = {
   getAllProvinces() {

@@ -1,8 +1,8 @@
 import { createRoute, type OpenAPIHono } from "@hono/zod-openapi";
 import { z } from "zod";
-import { regionService } from "@/services/region.service";
-import { successResponse } from "@/lib/response";
-import { villageSchema, metaSchema, pageQuery, limitQuery } from "@/schemas/region.schema";
+import { regionService } from "../services/region.service";
+import { successResponse } from "../lib/response";
+import { villageSchema, metaSchema, pageQuery, limitQuery } from "../schemas/region.schema";
 
 const paramsSchema = z.object({
   code: z.string().regex(/^\d{5}$/, "Postal code must be 5 digits").openapi({

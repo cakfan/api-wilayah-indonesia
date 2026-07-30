@@ -1,7 +1,7 @@
 import { createRoute, type OpenAPIHono } from "@hono/zod-openapi";
 import { z } from "zod";
-import { getDb } from "@/db/connection";
-import { successResponse } from "@/lib/response";
+import { getDb } from "../db/connection";
+import { successResponse } from "../lib/response";
 
 const healthResponse = z
   .object({

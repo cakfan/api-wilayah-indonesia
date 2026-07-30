@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import { app } from "@/index";
+import { app } from "../../src/index";
 
 describe("GET /", () => {
   it("should return API message", async () => {

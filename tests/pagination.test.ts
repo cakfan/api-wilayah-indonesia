@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import { calculatePagination, getOffset } from "@/lib/pagination";
+import { calculatePagination, getOffset } from "../src/lib/pagination";
 
 describe("calculatePagination", () => {
   it("should calculate pagination correctly", () => {

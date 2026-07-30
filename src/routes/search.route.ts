@@ -1,8 +1,8 @@
 import { createRoute, type OpenAPIHono } from "@hono/zod-openapi";
 import { z } from "zod";
-import { regionService } from "@/services/region.service";
-import { successResponse } from "@/lib/response";
-import { provinceSchema, regencySchema, districtSchema, villageSchema, metaSchema, qQuery, typeQuery, pageQuery, limitQuery } from "@/schemas/region.schema";
+import { regionService } from "../services/region.service";
+import { successResponse } from "../lib/response";
+import { provinceSchema, regencySchema, districtSchema, villageSchema, metaSchema, qQuery, typeQuery, pageQuery, limitQuery } from "../schemas/region.schema";
 
 const searchResultSchema = z.object({
   data: z.array(z.union([provinceSchema, regencySchema, districtSchema, villageSchema])),

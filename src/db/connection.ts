@@ -1,7 +1,7 @@
 import { Database } from "bun:sqlite";
 import { existsSync } from "fs";
 import { join } from "path";
-import { logger } from "@/lib/logger";
+import { logger } from "../lib/logger";
 
 function resolveDbPath(): string {
   if (process.env.DB_PATH) {

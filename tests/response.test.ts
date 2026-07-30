@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import { successResponse, errorResponse } from "@/lib/response";
+import { successResponse, errorResponse } from "../src/lib/response";
 
 describe("successResponse", () => {
   it("should return data only", () => {

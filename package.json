@@ -24,7 +24,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "build": "bun run build-data && bun build src/index.ts --outdir ./dist --target bun",
+    "build": "bun run build-data",
     "build-data": "bun run scripts/build-data.ts",
     "validate-data": "bun run scripts/validate-data.ts",
     "test": "bun test",

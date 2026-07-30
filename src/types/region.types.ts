@@ -5,7 +5,7 @@ import {
   districtSchema,
   villageSchema,
   metaSchema,
-} from "@/schemas/region.schema";
+} from "../schemas/region.schema";
 
 export type Province = z.infer<typeof provinceSchema>;
 export type Regency = z.infer<typeof regencySchema>;
