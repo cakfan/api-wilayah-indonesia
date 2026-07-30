@@ -590,14 +590,13 @@ app.get("/docs", (c) => {
 </html>`);
 });
 
-export { app };
+export default app;
 
-const port = Number(process.env.PORT) || 3000;
-const env = process.env.NODE_ENV || "development";
+if (import.meta.main) {
+  const port = Number(process.env.PORT) || 3000;
+  const env = process.env.NODE_ENV || "development";
 
-logger.info({ port, env }, "Starting API Wilayah Indonesia");
+  logger.info({ port, env }, "Starting API Wilayah Indonesia");
 
-export default {
-  port,
-  fetch: app.fetch,
-};
+  Bun.serve({ port, fetch: app.fetch });
+}
